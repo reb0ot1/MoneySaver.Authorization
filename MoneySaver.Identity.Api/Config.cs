@@ -30,19 +30,19 @@ namespace IdentityServerAspNetIdentity
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
-                //new Client
-                //{
-                //    ClientId = "moneysaverapiclient",
-                //    ClientName = "Money Saver API client",
-                //    //RedirectUris = { "http://localhost:6001" },
-                //    //FrontChannelLogoutUri = "http://activities.moneysaver.local/signout-oidc",
-                //    //PostLogoutRedirectUris = { "http://activities.moneysaver.local/signout-callback-oidc" },
-                //    AllowAccessTokensViaBrowser = true,
-                //    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                //    ClientSecrets = { new Secret("moneysaverapikey".Sha256()) },
+                new Client
+                {
+                    ClientId = "moneysaverapiclient",
+                    ClientName = "Money Saver API client",
+                    //RedirectUris = { "http://localhost:6001" },
+                    //FrontChannelLogoutUri = "http://activities.moneysaver.local/signout-oidc",
+                    //PostLogoutRedirectUris = { "http://activities.moneysaver.local/signout-callback-oidc" },
+                    AllowAccessTokensViaBrowser = true,
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets = { new Secret("moneysaverapikey".Sha256()) },
 
-                //    AllowedScopes = { "openid", "profile", "moneysaverapi2" }
-                //},
+                    AllowedScopes = { "openid", "profile", "manage" }
+                },
 
                 new Client
                 {
