@@ -1,61 +1,70 @@
 ﻿using IdentityServer4.Models;
+using Microsoft.Extensions.Configuration;
+using MoneySaver.Identity.Api.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IdentityServerAspNetIdentity
 {
-    public static class Config
+    public class Config 
     {
-        public static IEnumerable<IdentityResource> IdentityResources =>
+        private readonly ClientsConfiguration clientsConf = new ClientsConfiguration();
+
+        public Config(IConfiguration configuration)
+        {
+            configuration.Bind(nameof(ClientsConfiguration), this.clientsConf);
+        }
+
+        public IEnumerable<IdentityResource> IdentityResources =>
                    new IdentityResource[]
                    {
                         new IdentityResources.OpenId(),
                         new IdentityResources.Profile(),
                    };
-
-        public static IEnumerable<ApiScope> ApiScopes =>
-            new ApiScope[]
-            {
+        public IEnumerable<ApiScope> ApiScopes =>
+           new ApiScope[]
+           {
                 new ApiScope("manage", "manage api")
-            };
+           };
 
-        public static IEnumerable<ApiResource> ApiResources =>
+        public IEnumerable<ApiResource> ApiResources =>
             new ApiResource[]
             {
                 new ApiResource("moneysaverapi", "Money saver api")
-                { 
+                {
                     Scopes = { "manage"}
                 }
             };
 
-        public static IEnumerable<Client> Clients =>
+        public IEnumerable<Client> Clients =>
             new Client[]
             {
-                //new Client
-                //{
-                //    ClientId = "moneysaverapiclient",
-                //    ClientName = "Money Saver API client",
-                //    //RedirectUris = { "http://localhost:6001" },
-                //    //FrontChannelLogoutUri = "http://activities.moneysaver.local/signout-oidc",
-                //    //PostLogoutRedirectUris = { "http://activities.moneysaver.local/signout-callback-oidc" },
-                //    AllowAccessTokensViaBrowser = true,
-                //    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                //    ClientSecrets = { new Secret("moneysaverapikey".Sha256()) },
+                new Client
+                {
+                    ClientId = this.clientsConf.DataApi.Id,
+                    ClientName = this.clientsConf.DataApi.Name,
+                    AllowAccessTokensViaBrowser = true,
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets = this.clientsConf.DataApi.Secrets
+                        .Select(s => new Secret(s.Sha256()))
+                        .ToList(),
 
-                //    AllowedScopes = { "openid", "profile", "moneysaverapi2" }
-                //},
+                    AllowedScopes = this.clientsConf.DataApi.AllowedScopes
+                },
 
                 new Client
                 {
-                    ClientId = "blazor",
+                    ClientId = this.clientsConf.BlazorApp.Id,
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedCorsOrigins = { "https://localhost:4001" },
-                    AllowedScopes = { "openid", "profile", "manage" },
-                    RedirectUris = { "https://localhost:4001/authentication/login-callback" },
-                    PostLogoutRedirectUris = { "https://localhost:4001/" },
+                    AllowedCorsOrigins = this.clientsConf.BlazorApp.AllowedOrigins,
+                    AllowedScopes = this.clientsConf.BlazorApp.AllowedScopes,
+                    RedirectUris = this.clientsConf.BlazorApp.RedirectUris,
+                    PostLogoutRedirectUris = this.clientsConf.BlazorApp.PostLogoutRedirectUris,
                     Enabled = true
                 },
             };
+
     }
 }

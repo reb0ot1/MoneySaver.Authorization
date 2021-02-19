@@ -7,11 +7,13 @@ using IdentityServerAspNetIdentity.Data;
 using IdentityServerAspNetIdentity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MoneySaver.Identity.Api.Models;
 
 namespace IdentityServerAspNetIdentity
 {
@@ -37,6 +39,8 @@ namespace IdentityServerAspNetIdentity
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            var clientConf = new Config(this.Configuration);
+
             var builder = services.AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -46,10 +50,10 @@ namespace IdentityServerAspNetIdentity
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
             })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryApiResources(Config.ApiResources)
-                .AddInMemoryClients(Config.Clients)
+                .AddInMemoryIdentityResources(clientConf.IdentityResources)
+                .AddInMemoryApiScopes(clientConf.ApiScopes)
+                .AddInMemoryApiResources(clientConf.ApiResources)
+                .AddInMemoryClients(clientConf.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
 
             // not recommended for production - you need to store your key material somewhere secure
@@ -75,6 +79,16 @@ namespace IdentityServerAspNetIdentity
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
+
+            //TODO: Check if the below affects the application
+            //var fordwardedHeaderOptions = new ForwardedHeadersOptions
+            //{
+            //    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            //};
+            //fordwardedHeaderOptions.KnownNetworks.Clear();
+            //fordwardedHeaderOptions.KnownProxies.Clear();
+
+            //app.UseForwardedHeaders(fordwardedHeaderOptions);
 
             app.UseStaticFiles();
 

@@ -32,6 +32,7 @@ namespace IdentityServerAspNetIdentity
                 //    rollOnFileSizeLimit: true,
                 //    shared: true,
                 //    flushToDiskInterval: TimeSpan.FromSeconds(1))
+                .WriteTo.MySQL("server=localhost;Port=5533;uid=user;pwd=password;database=dbms", "logging_autority", LogEventLevel.Information, true)
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
 
