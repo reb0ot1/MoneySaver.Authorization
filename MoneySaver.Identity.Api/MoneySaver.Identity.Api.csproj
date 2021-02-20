@@ -23,5 +23,6 @@
 
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.5" />
+    <PackageReference Include="Serilog.Sinks.MySQL" Version="4.0.0" />
   </ItemGroup>
 </Project>
