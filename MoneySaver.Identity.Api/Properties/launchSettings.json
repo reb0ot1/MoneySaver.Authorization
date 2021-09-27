@@ -2,19 +2,14 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
-    "iis": {
-      "applicationUrl": "http://localhost/MoneySaver.Identity.Api",
-      "sslPort": 0
-    },
     "iisExpress": {
-      "applicationUrl": "http://localhost:56677/",
-      "sslPort": 44382
+      "applicationUrl": "http://localhost:60272/",
+      "sslPort": 44380
     }
   },
   "profiles": {
     "SelfHost": {
       "commandName": "Project",
-      //"commandLineArgs": "/seed",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

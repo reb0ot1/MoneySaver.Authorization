@@ -25,14 +25,14 @@ namespace IdentityServerAspNetIdentity
                 .MinimumLevel.Override("System", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                // uncomment to write to Azure diagnostics stream
-                //.WriteTo.File(
-                //    @"D:\home\LogFiles\Application\identityserver.txt",
-                //    fileSizeLimitBytes: 1_000_000,
-                //    rollOnFileSizeLimit: true,
-                //    shared: true,
-                //    flushToDiskInterval: TimeSpan.FromSeconds(1))
-                .WriteTo.MySQL("server=dbmysql;Port=5533;uid=user;pwd=password;database=dbms", "logging_autority", LogEventLevel.Information, true)
+                 // uncomment to write to Azure diagnostics stream
+                 //.WriteTo.File(
+                 //    @"D:\home\LogFiles\Application\identityserver.txt",
+                 //    fileSizeLimitBytes: 1_000_000,
+                 //    rollOnFileSizeLimit: true,
+                 //    shared: true,
+                 //    flushToDiskInterval: TimeSpan.FromSeconds(1))
+                 .WriteTo.MySQL("server=localhost;Port=5533;uid=user;pwd=password;database=dbms", "logging_autority", LogEventLevel.Information, true)
                 //.WriteTo.MySQL("server=dbmysql;Port=3306;uid=user;pwd=password;database=dbms", "logging_autority", LogEventLevel.Information, true)
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
